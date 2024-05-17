@@ -51,7 +51,7 @@ spec:
       action: fetch:template
       input:
         url: ./skeleton
-        copyWithoutTemplating: []
+        copyWithoutTemplating: ['src/main/resources/**/*']
         values:
           description: ${{ parameters.description }}
           artifact_id: ${{ parameters.component_id }}
