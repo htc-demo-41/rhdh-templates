@@ -7,8 +7,10 @@ metadata:
     - java
     - quarkus
   annotations:
-    'github.com/project-slug': ??/${{values.artifact_id}}
+    'github.com/project-slug': ${{ values.githubOrgId }}/${{values.artifact_id}}
     'backstage.io/kubernetes-id': ${{values.artifact_id}}
+    'humanitec.com/orgId': ${{ values.orgId | dump }}
+    'humanitec.com/appId': ${{ values.artifact_id | dump}}
 spec:
   type: service
   lifecycle: experimental
