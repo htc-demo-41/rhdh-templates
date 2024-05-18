@@ -60,6 +60,7 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
           architecture: x64
+          cache: 'maven'
 
       - name: Run the Maven build phase
         run: mvn package -Dmaven.test.skip=true
