@@ -1,22 +1,23 @@
-name: Deploy ${{values.artifact_id}}
+name: Deploy
 
 on:
   push:
     branches: main
-
+{% raw %}
 concurrency:
   group: ${{ github.ref }}
   cancel-in-progress: true
 env:
-
-  IMAGE: ${{values.artifact_id}}
+{% endraw %}
+  IMAGE: ${{ values.artifact_id }}
+{% raw %}
   AWS_REGION: ${{ vars.AWS_REGION }}
   AWS_ROLE_ARN: ${{ vars.AWS_ROLE_ARN }}
-
   HUMCTL_VERSION: '0.23.1'
-  APP_NAME: ${{values.artifact_id}}
+{% endraw %}
+  APP_NAME: ${{ values.artifact_id }}
 
-
+{% raw %}
 jobs:
   deploy:
     name: Build & Notify Humanitec
@@ -61,9 +62,10 @@ jobs:
           architecture: x64
 
       - name: Run the Maven build phase
-        run: mvn package -Dmaven.test.skip=true    
+        run: mvn package -Dmaven.test.skip=true
 
       - run: docker build --platform linux/amd64 . -t $CONTAINER_REGISTRY/$IMAGE:$TAG -f ./src/main/docker/Dockerfile.jvm
+
       - run: docker push $CONTAINER_REGISTRY/$IMAGE:$TAG
 
       - uses: humanitec/setup-cli-action@v1
@@ -93,4 +95,4 @@ jobs:
             --workload-source-url "https://github.com/${{ github.repository }}/blob/${{ github.ref_name }}/score.yaml" \
             --image $CONTAINER_REGISTRY/$IMAGE:$TAG \
             --message "${{ github.event.head_commit.message }}"
-
+{% endraw %}
